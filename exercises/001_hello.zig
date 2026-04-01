@@ -14,7 +14,7 @@
 // Perhaps knowing this will help solve the errors we're getting
 // with this little program?
 //
-const std = @import("std");
+const std: type = @import("std");
 
 pub fn main() void {
     std.debug.print("Hello world!\n", .{});

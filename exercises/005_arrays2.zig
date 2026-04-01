@@ -16,21 +16,21 @@
 // parlance as "comptime" and we'll learn plenty more about that
 // later.
 //
-const std = @import("std");
+const std: type = @import("std");
 
 pub fn main() void {
-    const le = [_]u8{ 1, 3 };
-    const et = [_]u8{ 3, 7 };
+    const le: [2]u8 = [_]u8{ 1, 3 };
+    const et: [2]u8 = [_]u8{ 3, 7 };
 
     // (Problem 1)
     // Please set this array concatenating the two arrays above.
     // It should result in: 1 3 3 7
-    const leet = le ++ et;
+    const leet: [4]u8 = le ++ et;
 
     // (Problem 2)
     // Please set this array using repetition.
     // It should result in: 1 0 0 1 1 0 0 1 1 0 0 1
-    const bit_pattern = [_]u8{ 1, 0, 0, 1 } ** 3;
+    const bit_pattern: [12]u8 = [_]u8{ 1, 0, 0, 1 } ** 3;
 
     // Okay, that's all of the problems. Let's see the results.
     //

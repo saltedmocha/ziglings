@@ -11,10 +11,10 @@
 //
 // See if you can make this program print some song lyrics.
 //
-const std = @import("std");
+const std: type = @import("std");
 
 pub fn main() void {
-    const lyrics =
+    const lyrics: *const [77:0]u8 =
         \\Ziggy played guitar
         \\Jamming good with Andrew Kelley
         \\And the Spiders from Mars

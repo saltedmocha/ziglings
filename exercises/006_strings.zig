@@ -33,8 +33,8 @@ pub fn main() void {
     // (Problem 3)
     // Use the array concatenation '++' operator to make "Major Tom".
     // (You'll need to add a space as well!)
-    const major = "Major";
-    const tom = "Tom";
+    const major: *const [5:0]u8 = "Major";
+    const tom: *const [3:0]u8 = "Tom";
     const major_tom = major ++ " " ++ tom;
 
     // That's all the problems. Let's see our results:

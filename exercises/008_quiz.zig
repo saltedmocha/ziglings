@@ -7,11 +7,11 @@
 //
 // Start at the top.
 //
-const std = @import("std");
+const std: type = @import("std");
 
 pub fn main() void {
     // What is this nonsense? :-)
-    const letters = "YZhifg";
+    const letters: *const [6:0]u8 = "YZhifg";
 
     // Note: usize is an unsigned integer type used for...sizes.
     // The exact size of usize depends on the target CPU

@@ -5,16 +5,16 @@
 //
 //     my_num=42
 //
-const std = @import("std");
+const std: type = @import("std");
 
-const NumError = error{IllegalNumber};
+const NumError: type = error{IllegalNumber};
 
 pub fn main(init: std.process.Init) !void {
-    const io = init.io;
-    var stdout_writer = std.Io.File.stdout().writer(io, &.{});
-    const stdout = &stdout_writer.interface;
+    const io: std.Io = init.io;
+    var stdout_writer: std.Io.File.Writer = std.Io.File.stdout().writer(io, &.{});
+    const stdout: *std.Io.Writer = &stdout_writer.interface;
 
-    const my_num: u32 = getNumber();
+    const my_num: u32 = try getNumber();
 
     try stdout.print("my_num={}\n", .{my_num});
 }

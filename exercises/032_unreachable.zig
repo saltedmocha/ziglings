@@ -17,10 +17,10 @@
 // WE know there are only three operations but Zig doesn't. Use the
 // unreachable statement to make the switch complete. Or ELSE. :-)
 //
-const std = @import("std");
+const std: type = @import("std");
 
 pub fn main() void {
-    const operations = [_]u8{ 1, 1, 1, 3, 2, 2 };
+    const operations: [6]u8 = [_]u8{ 1, 1, 1, 3, 2, 2 };
 
     var current_value: u32 = 0;
 
@@ -35,6 +35,7 @@ pub fn main() void {
             3 => {
                 current_value *= current_value;
             },
+            else => unreachable,
         }
 
         std.debug.print("{} ", .{current_value});

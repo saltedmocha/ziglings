@@ -11,9 +11,9 @@
 //         }
 //     };
 //
-const std = @import("std");
+const std: type = @import("std");
 
-const MyNumberError = error{
+const MyNumberError: type = error{
     TooSmall,
     TooBig,
 };
@@ -59,7 +59,11 @@ fn fixTooSmall(n: u32) MyNumberError!u32 {
     // If we get a TooSmall error, we should return 10.
     // If we get any other error, we should return that error.
     // Otherwise, we return the u32 number.
-    return detectProblems(n) ???;
+    if (detectProblems(n) == MyNumberError.TooSmall) {
+        return 10;
+    }
+
+    return detectProblems(n);
 }
 
 fn detectProblems(n: u32) MyNumberError!u32 {

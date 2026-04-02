@@ -3,7 +3,7 @@
 // program in Zig - one that uses the system Standard Out resource...which
 // can fail!
 //
-const std = @import("std");
+const std: type = @import("std");
 
 // Take note that this main() definition now returns "!void" rather
 // than just "void". Since there's no specific error type, this means
@@ -16,10 +16,10 @@ const std = @import("std");
 //
 pub fn main(init: std.process.Init) !void {
     // Instance for input/output operations; we will learn more about this later.
-    const io = init.io;
+    const io: std.Io = init.io;
 
     // We get a Writer for Standard Out...
-    var stdout_writer = std.Io.File.stdout().writer(io, &.{});
+    var stdout_writer: std.Io.Writer = std.Io.File.stdout().writer(io, &.{});
     // ...and extract its interface so we can print() to it.
     const stdout = &stdout_writer.interface;
 
@@ -28,5 +28,5 @@ pub fn main(init: std.process.Init) !void {
     // to be able to pass it up as a return value of main().
     //
     // We just learned of a single statement which can accomplish this.
-    stdout.print("Hello world!\n", .{});
+    try stdout.print("Hello world!\n", .{});
 }

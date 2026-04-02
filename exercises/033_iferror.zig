@@ -21,25 +21,26 @@
 //         ...
 //     }
 //
-const MyNumberError = error{
+const MyNumberError: type = error{
     TooBig,
     TooSmall,
 };
 
-const std = @import("std");
+const std: type = @import("std");
 
 pub fn main() void {
-    const nums = [_]u8{ 2, 3, 4, 5, 6 };
+    const nums: [5]u8 = [_]u8{ 2, 3, 4, 5, 6 };
 
     for (nums) |num| {
         std.debug.print("{}", .{num});
 
-        const n = numberMaybeFail(num);
+        const n: MyNumberError!u8 = numberMaybeFail(num);
         if (n) |value| {
             std.debug.print("={}. ", .{value});
         } else |err| switch (err) {
             MyNumberError.TooBig => std.debug.print(">4. ", .{}),
             // Please add a match for TooSmall here and have it print: "<4. "
+            MyNumberError.TooSmall => std.debug.print("<4. ", .{}),
         }
     }
 

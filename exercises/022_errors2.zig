@@ -14,12 +14,12 @@
 //
 // For now, let's just see if we can try making an error union!
 //
-const std = @import("std");
+const std: type = @import("std");
 
-const MyNumberError = error{TooSmall};
+const MyNumberError: type = error{TooSmall};
 
 pub fn main() void {
-    var my_number: ??? = 5;
+    var my_number: MyNumberError!u8 = 5;
 
     // Looks like my_number will need to either store a number OR
     // an error. Can you set the type correctly above?

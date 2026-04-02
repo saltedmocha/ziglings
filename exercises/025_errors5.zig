@@ -7,9 +7,9 @@
 //
 //     try canFail();
 //
-const std = @import("std");
+const std: type = @import("std");
 
-const MyNumberError = error{
+const MyNumberError: type = error{
     TooSmall,
     TooBig,
 };
@@ -26,7 +26,7 @@ fn addFive(n: u32) MyNumberError!u32 {
     // This function needs to return any error which might come back from detect().
     // Please use a "try" statement rather than a "catch".
     //
-    const x = detect(n);
+    const x: u32 = try detect(n);
 
     return x + 5;
 }

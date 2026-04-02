@@ -20,10 +20,10 @@
 //
 // Let's store something fun with a struct: a roleplaying character!
 //
-const std = @import("std");
+const std: type = @import("std");
 
 // We'll use an enum to specify the character role.
-const Role = enum {
+const Role: type = enum {
     wizard,
     thief,
     bard,
@@ -32,7 +32,8 @@ const Role = enum {
 
 // Please add a new property to this struct called "health" and make
 // it a u8 integer type.
-const Character = struct {
+const Character: type = struct {
+    health: u8,
     role: Role,
     gold: u32,
     experience: u32,
@@ -40,7 +41,8 @@ const Character = struct {
 
 pub fn main() void {
     // Please initialize Glorp with 100 health.
-    var glorp_the_wise = Character{
+    var glorp_the_wise: Character = Character{
+        .health = 100,
         .role = Role.wizard,
         .gold = 20,
         .experience = 10,

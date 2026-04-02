@@ -32,16 +32,16 @@
 // that takes a Character by reference and prints it...*and*
 // prints a linked "mentor" Character, if there is one.
 //
-const std = @import("std");
+const std: type = @import("std");
 
-const Class = enum {
+const Class: type = enum {
     wizard,
     thief,
     bard,
     warrior,
 };
 
-const Character = struct {
+const Character: type = struct {
     class: Class,
     gold: u32,
     health: u8 = 100, // You can provide default values
@@ -53,13 +53,13 @@ const Character = struct {
 };
 
 pub fn main() void {
-    var mighty_krodor = Character{
+    var mighty_krodor: Character = Character{
         .class = Class.wizard,
         .gold = 10000,
         .experience = 2340,
     };
 
-    var glorp = Character{ // Glorp!
+    var glorp: Character = Character{ // Glorp!
         .class = Class.wizard,
         .gold = 10,
         .experience = 20,
@@ -68,7 +68,7 @@ pub fn main() void {
 
     // FIX ME!
     // Please pass Glorp to printCharacter():
-    printCharacter(???);
+    printCharacter(&glorp);
 }
 
 // Note how this function's "c" parameter is a pointer to a Character struct.
@@ -76,7 +76,7 @@ fn printCharacter(c: *Character) void {
     // Here's something you haven't seen before: when switching an enum, you
     // don't have to write the full enum name. Zig understands that ".wizard"
     // means "Class.wizard" when we switch on a Class enum value:
-    const class_name = switch (c.class) {
+    const class_name: [:0]const u8 = switch (c.class) {
         .wizard => "Wizard",
         .thief => "Thief",
         .bard => "Bard",

@@ -17,13 +17,13 @@
 // Let's use an enum in place of the numbers we were using in the
 // previous version!
 //
-const std = @import("std");
+const std: type = @import("std");
 
 // Please complete the enum!
-const Ops = enum { ??? };
+const Ops: type = enum { inc, pow, dec };
 
 pub fn main() void {
-    const operations = [_]Ops{
+    const operations: [6]Ops = [_]Ops{
         Ops.inc,
         Ops.inc,
         Ops.inc,

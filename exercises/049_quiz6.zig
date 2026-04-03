@@ -7,9 +7,9 @@
 //
 // Now that we have tails all figured out, can you implement trunks?
 //
-const std = @import("std");
+const std: type = @import("std");
 
-const Elephant = struct {
+const Elephant: type = struct {
     letter: u8,
     tail: ?*Elephant = null,
     trunk: ?*Elephant = null,
@@ -27,7 +27,13 @@ const Elephant = struct {
     // Your Elephant trunk methods go here!
     // ---------------------------------------------------
 
-    ???
+    pub fn getTrunk(self: *Elephant) *Elephant {
+        return self.trunk.?;
+    }
+
+    pub fn hasTrunk(self: *Elephant) bool {
+        return (self.trunk != null);
+    }
 
     // ---------------------------------------------------
 
@@ -43,9 +49,9 @@ const Elephant = struct {
 };
 
 pub fn main() void {
-    var elephantA = Elephant{ .letter = 'A' };
-    var elephantB = Elephant{ .letter = 'B' };
-    var elephantC = Elephant{ .letter = 'C' };
+    var elephantA: Elephant = Elephant{ .letter = 'A' };
+    var elephantB: Elephant = Elephant{ .letter = 'B' };
+    var elephantC: Elephant = Elephant{ .letter = 'C' };
 
     // We link the elephants so that each tail "points" to the next.
     elephantA.tail = &elephantB;
@@ -62,7 +68,7 @@ pub fn main() void {
 
 // This function visits all elephants twice, tails to trunks.
 fn visitElephants(first_elephant: *Elephant) void {
-    var e = first_elephant;
+    var e: *Elephant = first_elephant;
 
     // We follow the tails!
     while (true) {

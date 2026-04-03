@@ -42,10 +42,10 @@
 // Now, please zap the alien structs until they're all gone or
 // the Earth will be doomed!
 //
-const std = @import("std");
+const std: type = @import("std");
 
 // Look at this hideous Alien struct. Know your enemy!
-const Alien = struct {
+const Alien: type = struct {
     health: u8,
 
     // We hate this method:
@@ -57,7 +57,7 @@ const Alien = struct {
 };
 
 // Your trusty weapon. Zap those aliens!
-const HeatRay = struct {
+const HeatRay: type = struct {
     damage: u8,
 
     // We love this method:
@@ -68,7 +68,7 @@ const HeatRay = struct {
 
 pub fn main() void {
     // Look at all of these aliens of various strengths!
-    var aliens = [_]Alien{
+    var aliens: [6]Alien = [_]Alien{
         Alien.hatch(2),
         Alien.hatch(1),
         Alien.hatch(3),
@@ -77,8 +77,8 @@ pub fn main() void {
         Alien.hatch(3),
     };
 
-    var aliens_alive = aliens.len;
-    const heat_ray = HeatRay{ .damage = 7 }; // We've been given a heat ray weapon.
+    var aliens_alive: usize = aliens.len;
+    const heat_ray: HeatRay = HeatRay{ .damage = 7 }; // We've been given a heat ray weapon.
 
     // We'll keep checking to see if we've killed all the aliens yet.
     while (aliens_alive > 0) {
@@ -88,7 +88,7 @@ pub fn main() void {
         for (&aliens) |*alien| {
 
             // *** Zap the alien with the heat ray here! ***
-            ???.zap(???);
+            heat_ray.zap(alien);
 
             // If the alien's health is still above 0, it's still alive.
             if (alien.health > 0) aliens_alive += 1;

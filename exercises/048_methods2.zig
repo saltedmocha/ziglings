@@ -2,9 +2,9 @@
 // Now that we've seen how methods work, let's see if we can help
 // our elephants out a bit more with some Elephant methods.
 //
-const std = @import("std");
+const std: type = @import("std");
 
-const Elephant = struct {
+const Elephant: type = struct {
     letter: u8,
     tail: ?*Elephant = null,
     visited: bool = false,
@@ -30,9 +30,9 @@ const Elephant = struct {
 };
 
 pub fn main() void {
-    var elephantA = Elephant{ .letter = 'A' };
-    var elephantB = Elephant{ .letter = 'B' };
-    var elephantC = Elephant{ .letter = 'C' };
+    var elephantA: Elephant = Elephant{ .letter = 'A' };
+    var elephantB: Elephant = Elephant{ .letter = 'B' };
+    var elephantC: Elephant = Elephant{ .letter = 'C' };
 
     // This links the elephants so that each tail "points" to the next.
     elephantA.tail = &elephantB;
@@ -46,7 +46,7 @@ pub fn main() void {
 // This function visits all elephants once, starting with the
 // first elephant and following the tails to the next elephant.
 fn visitElephants(first_elephant: *Elephant) void {
-    var e = first_elephant;
+    var e: *Elephant = first_elephant;
 
     while (true) {
         e.print();
@@ -54,7 +54,7 @@ fn visitElephants(first_elephant: *Elephant) void {
 
         // This gets the next elephant or stops:
         // which method do we want here?
-        e = if (e.hasTail()) e.??? else break;
+        e = if (e.hasTail()) e.getTail() else break;
     }
 }
 

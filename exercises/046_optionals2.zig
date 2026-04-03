@@ -18,22 +18,23 @@
 //
 // Now let's make those elephant tails optional!
 //
-const std = @import("std");
+const std: type = @import("std");
 
-const Elephant = struct {
+const Elephant: type = struct {
     letter: u8,
-    tail: *Elephant = null, // Hmm... tail needs something...
+    tail: ?*Elephant = null, // Hmm... tail needs something...
     visited: bool = false,
 };
 
 pub fn main() void {
-    var elephantA = Elephant{ .letter = 'A' };
-    var elephantB = Elephant{ .letter = 'B' };
-    var elephantC = Elephant{ .letter = 'C' };
+    var elephantA: Elephant = Elephant{ .letter = 'A' };
+    var elephantB: Elephant = Elephant{ .letter = 'B' };
+    var elephantC: Elephant = Elephant{ .letter = 'C' };
 
     // Link the elephants so that each tail "points" to the next.
     linkElephants(&elephantA, &elephantB);
     linkElephants(&elephantB, &elephantC);
+    linkElephants(&elephantC, &elephantA);
 
     // `linkElephants` will stop the program if you try and link an
     // elephant that doesn't exist! Uncomment and see what happens.
@@ -54,7 +55,7 @@ fn linkElephants(e1: ?*Elephant, e2: ?*Elephant) void {
 // This function visits all elephants once, starting with the
 // first elephant and following the tails to the next elephant.
 fn visitElephants(first_elephant: *Elephant) void {
-    var e = first_elephant;
+    var e: *Elephant = first_elephant;
 
     while (!e.visited) {
         std.debug.print("Elephant {u}. ", .{e.letter});
@@ -66,6 +67,6 @@ fn visitElephants(first_elephant: *Elephant) void {
 
         // HINT: We want something similar to what `.?` does,
         // but instead of ending the program, we want to exit the loop...
-        e = e.tail ???
+        e = e.tail orelse break;
     }
 }

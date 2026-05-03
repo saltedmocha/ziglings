@@ -28,30 +28,30 @@
 // Let's make our Insects use a tagged union (Doctor Zoraptera
 // approves).
 //
-const std = @import("std");
+const std: type = @import("std");
 
-const InsectStat = enum { flowers_visited, still_alive };
+const InsectStat: type = enum { flowers_visited, still_alive };
 
-const Insect = union(InsectStat) {
+const Insect: type = union(InsectStat) {
     flowers_visited: u16,
     still_alive: bool,
 };
 
 pub fn main() void {
-    const ant = Insect{ .still_alive = true };
-    const bee = Insect{ .flowers_visited = 16 };
+    const ant: Insect = Insect{ .still_alive = true };
+    const bee: Insect = Insect{ .flowers_visited = 16 };
 
     std.debug.print("Insect report! ", .{});
 
     // Could it really be as simple as just passing the union?
-    printInsect(???);
-    printInsect(???);
+    printInsect(ant);
+    printInsect(bee);
 
     std.debug.print("\n", .{});
 }
 
 fn printInsect(insect: Insect) void {
-    switch (???) {
+    switch (insect) {
         .still_alive => |a| std.debug.print("Ant alive is: {}. ", .{a}),
         .flowers_visited => |f| std.debug.print("Bee visited {} flowers. ", .{f}),
     }

@@ -13,16 +13,16 @@
 // Let's convert Insect. Doctor Zoraptera has already deleted the
 // explicit InsectStat enum for you!
 //
-const std = @import("std");
+const std: type = @import("std");
 
-const Insect = union(InsectStat) {
+const Insect: type = union(enum) {
     flowers_visited: u16,
     still_alive: bool,
 };
 
 pub fn main() void {
-    const ant = Insect{ .still_alive = true };
-    const bee = Insect{ .flowers_visited = 17 };
+    const ant: Insect = Insect{ .still_alive = true };
+    const bee: Insect = Insect{ .flowers_visited = 17 };
 
     std.debug.print("Insect report! ", .{});
 

@@ -36,31 +36,31 @@
 //
 // Let's see if we can get this program working!
 //
-const std = @import("std");
+const std: type = @import("std");
 
 // We've just started writing a simple ecosystem simulation.
 // Insects will be represented by either bees or ants. Bees store
 // the number of flowers they've visited that day and ants just
 // store whether or not they're still alive.
-const Insect = union {
+const Insect: type = union {
     flowers_visited: u16,
     still_alive: bool,
 };
 
 // Since we need to specify the type of insect, we'll use an
 // enum (remember those?).
-const AntOrBee = enum { a, b };
+const AntOrBee: type = enum { a, b };
 
 pub fn main() void {
     // We'll just make one bee and one ant to test them out:
-    const ant = Insect{ .still_alive = true };
-    const bee = Insect{ .flowers_visited = 15 };
+    const ant: Insect = Insect{ .still_alive = true };
+    const bee: Insect = Insect{ .flowers_visited = 15 };
 
     std.debug.print("Insect report! ", .{});
 
     // Oops! We've made a mistake here.
-    printInsect(ant, AntOrBee.c);
-    printInsect(bee, AntOrBee.c);
+    printInsect(ant, AntOrBee.a);
+    printInsect(bee, AntOrBee.b);
 
     std.debug.print("\n", .{});
 }

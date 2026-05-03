@@ -15,14 +15,14 @@
 // with it. All of this will be loaded into RAM when it runs. Oh, and
 // that thing we name "const std"? That's a struct!
 //
-const std = @import("std");
+const std: type = @import("std");
 
 // Remember our old RPG Character struct? A struct is really just a
 // very convenient way to deal with memory. These fields (gold,
 // health, experience) are all values of a particular size. Add them
 // together and you have the size of the struct as a whole.
 
-const Character = struct {
+const Character: type = struct {
     gold: u32 = 0,
     health: u8 = 100,
     experience: u32 = 0,
@@ -34,7 +34,7 @@ const Character = struct {
 // RAM when your program runs. The relative location of this data in
 // memory is hard-coded and neither the address nor the value changes.
 
-const the_narrator = Character{
+const the_narrator: Character = Character{
     .gold = 12,
     .health = 99,
     .experience = 9000,
@@ -44,7 +44,7 @@ const the_narrator = Character{
 // this data won't change, but the data itself can since this is a var
 // and not a const.
 
-var global_wizard = Character{};
+var global_wizard: Character = Character{};
 
 // A function is instruction code at a particular address. Function
 // parameters in Zig are always immutable. They are stored in "the
@@ -65,7 +65,7 @@ pub fn main() void {
     // because each instance of glorp is mutable and therefore unique
     // to the invocation of this function.
 
-    var glorp = Character{
+    var glorp: Character = Character{
         .gold = 30,
     };
 
@@ -87,7 +87,7 @@ pub fn main() void {
     // Let's assign the std.debug.print function to a const named
     // "print" so that we can use this new name later!
 
-    const print = ???;
+    const print: fn (comptime []const u8, anytype) void = std.debug.print;
 
     // Now let's look at assigning and pointing to values in Zig.
     //
@@ -163,13 +163,13 @@ pub fn main() void {
     print("XP before:{}, ", .{glorp.experience});
 
     // Fix 1 of 2 goes here:
-    levelUp(glorp, reward_xp);
+    levelUp(&glorp, reward_xp);
 
     print("after:{}.\n", .{glorp.experience});
 }
 
 // Fix 2 of 2 goes here:
-fn levelUp(character_access: Character, xp: u32) void {
+fn levelUp(character_access: *Character, xp: u32) void {
     character_access.experience += xp;
 }
 

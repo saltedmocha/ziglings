@@ -38,10 +38,10 @@
 // *                                                           *
 // *************************************************************
 //
-const print = @import("std").debug.print;
+const print: fn (comptime []const u8, anytype) void = @import("std").debug.print;
 
 // The grue is a nod to Zork.
-const TripError = error{ Unreachable, EatenByAGrue };
+const TripError: type = error{ Unreachable, EatenByAGrue };
 
 // Let's start with the Places on the map. Each has a name and a
 // distance or difficulty of travel (as judged by the hermit).
@@ -50,17 +50,17 @@ const TripError = error{ Unreachable, EatenByAGrue };
 // assign the paths later. And why is that? Because paths contain
 // pointers to places and assigning them now would create a dependency
 // loop!
-const Place = struct {
+const Place: type = struct {
     name: []const u8,
     paths: []const Path = undefined,
 };
 
-var a = Place{ .name = "Archer's Point" };
-var b = Place{ .name = "Bridge" };
-var c = Place{ .name = "Cottage" };
-var d = Place{ .name = "Dogwood Grove" };
-var e = Place{ .name = "East Pond" };
-var f = Place{ .name = "Fox Pond" };
+var a: Place = Place{ .name = "Archer's Point" };
+var b: Place = Place{ .name = "Bridge" };
+var c: Place = Place{ .name = "Cottage" };
+var d: Place = Place{ .name = "Dogwood Grove" };
+var e: Place = Place{ .name = "East Pond" };
+var f: Place = Place{ .name = "Fox Pond" };
 
 //           The hermit's hand-drawn ASCII map
 //  +---------------------------------------------------+
@@ -89,11 +89,11 @@ var f = Place{ .name = "Fox Pond" };
 // places on the map. Note that we do not have to specify the type of
 // this value because we don't actually use it in our program once
 // it's compiled! (Don't worry if this doesn't make sense yet.)
-const place_count = 6;
+const place_count: comptime_int = 6;
 
 // Now let's create all of the paths between sites. A path goes from
 // one place to another and has a distance.
-const Path = struct {
+const Path: type = struct {
     from: *const Place,
     to: *const Place,
     dist: u8,
@@ -104,7 +104,7 @@ const Path = struct {
 // us write code that runs at compile time to "automate" repetitive
 // code (much like macros in other languages), but we haven't learned
 // how to do that yet!
-const a_paths = [_]Path{
+const a_paths: [1]Path = [_]Path{
     Path{
         .from = &a, // from: Archer's Point
         .to = &b, //   to: Bridge
@@ -112,7 +112,7 @@ const a_paths = [_]Path{
     },
 };
 
-const b_paths = [_]Path{
+const b_paths: [2]Path = [_]Path{
     Path{
         .from = &b, // from: Bridge
         .to = &a, //   to: Archer's Point
@@ -125,7 +125,7 @@ const b_paths = [_]Path{
     },
 };
 
-const c_paths = [_]Path{
+const c_paths: [2]Path = [_]Path{
     Path{
         .from = &c, // from: Cottage
         .to = &d, //   to: Dogwood Grove
@@ -138,7 +138,7 @@ const c_paths = [_]Path{
     },
 };
 
-const d_paths = [_]Path{
+const d_paths: [3]Path = [_]Path{
     Path{
         .from = &d, // from: Dogwood Grove
         .to = &b, //   to: Bridge
@@ -156,7 +156,7 @@ const d_paths = [_]Path{
     },
 };
 
-const e_paths = [_]Path{
+const e_paths: [2]Path = [_]Path{
     Path{
         .from = &e, // from: East Pond
         .to = &c, //   to: Cottage
@@ -169,7 +169,7 @@ const e_paths = [_]Path{
     },
 };
 
-const f_paths = [_]Path{
+const f_paths: [1]Path = [_]Path{
     Path{
         .from = &f, // from: Fox Pond
         .to = &d, //   to: Dogwood Grove
@@ -181,7 +181,7 @@ const f_paths = [_]Path{
 // "trip" out of it. A trip is a series of Places connected by Paths.
 // We use a TripItem union to allow both Places and Paths to be in the
 // same array.
-const TripItem = union(enum) {
+const TripItem: type = union(enum) {
     place: *const Place,
     path: *const Path,
 
@@ -192,8 +192,8 @@ const TripItem = union(enum) {
             // Oops! The hermit forgot how to capture the union values
             // in a switch statement. Please capture each value as
             // 'p' so the print statements work!
-            .place => print("{s}", .{p.name}),
-            .path => print("--{}->", .{p.dist}),
+            .place => |p| print("{s}", .{p.name}),
+            .path => |p| print("--{}->", .{p.dist}),
         }
     }
 };
@@ -204,7 +204,7 @@ const TripItem = union(enum) {
 // find a better Path to reach a Place (shorter distance), we update the
 // entry. Entries also serve as a "todo" list which is how we keep
 // track of which paths to explore next.
-const NotebookEntry = struct {
+const NotebookEntry: type = struct {
     place: *const Place,
     coming_from: ?*const Place,
     via_path: ?*const Path,
@@ -223,7 +223,7 @@ const NotebookEntry = struct {
 // |                      ...                       |
 // +---+----------------+----------------+----------+
 //
-const HermitsNotebook = struct {
+const HermitsNotebook: type = struct {
     // Remember the array repetition operator `**`? It is no mere
     // novelty, it's also a great way to assign multiple items in an
     // array without having to list them one by one. Here we use it to
@@ -255,7 +255,7 @@ const HermitsNotebook = struct {
             // dereference and optional value "unwrapping" look
             // together. Remember that you return the address with the
             // "&" operator.
-            if (place == entry.*.?.place) return entry;
+            if (place == entry.*.?.place) return &entry.*.?;
             // Try to make your answer this long:__________;
         }
         return null;
@@ -309,7 +309,7 @@ const HermitsNotebook = struct {
     //
     // Looks like the hermit forgot something in the return value of
     // this function. What could that be?
-    fn getTripTo(self: *HermitsNotebook, trip: []?TripItem, dest: *Place) void {
+    fn getTripTo(self: *HermitsNotebook, trip: []?TripItem, dest: *Place) TripError!void {
         // We start at the destination entry.
         const destination_entry = self.getEntry(dest);
 
@@ -323,7 +323,7 @@ const HermitsNotebook = struct {
 
         // Variables hold the entry we're currently examining and an
         // index to keep track of where we're appending trip items.
-        var current_entry = destination_entry.?;
+        var current_entry: *NotebookEntry = destination_entry.?;
         var i: u8 = 0;
 
         // At the end of each looping, a continue expression increments
@@ -344,7 +344,7 @@ const HermitsNotebook = struct {
             // program! (This really shouldn't ever happen. Have you
             // checked for grues?)
             // Note: you do not need to fix anything here.
-            const previous_entry = self.getEntry(current_entry.coming_from.?);
+            const previous_entry: ?*NotebookEntry = self.getEntry(current_entry.coming_from.?);
             if (previous_entry == null) return TripError.EatenByAGrue;
             current_entry = previous_entry.?;
         }
@@ -355,8 +355,8 @@ pub fn main() void {
     // Here's where the hermit decides where he would like to go. Once
     // you get the program working, try some different Places on the
     // map!
-    const start = &a; // Archer's Point
-    const destination = &f; // Fox Pond
+    const start: *Place = &a; // Archer's Point
+    const destination: *Place = &f; // Fox Pond
 
     // Store each Path array as a slice in each Place. As mentioned
     // above, we needed to delay making these references to avoid
@@ -373,8 +373,8 @@ pub fn main() void {
     // "start" entry. Note the null values. Read the comments for the
     // checkNote() method above to see how this entry gets added to
     // the notebook.
-    var notebook = HermitsNotebook{};
-    var working_note = NotebookEntry{
+    var notebook: HermitsNotebook = HermitsNotebook{};
+    var working_note: NotebookEntry = NotebookEntry{
         .place = start,
         .coming_from = null,
         .via_path = null,
@@ -386,7 +386,7 @@ pub fn main() void {
     // "start" entry we just added) until we run out, at which point
     // we'll have checked every reachable Place.
     while (notebook.hasNextEntry()) {
-        const place_entry = notebook.getNextEntry();
+        const place_entry: *const NotebookEntry = notebook.getNextEntry();
 
         // For every Path that leads FROM the current Place, create a
         // new note (in the form of a NotebookEntry) with the

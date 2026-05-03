@@ -10,7 +10,7 @@
 // a known length. The pointer doesn't. It is up to YOU to keep track
 // of the number of u8s foo_ptr points to!
 //
-const std = @import("std");
+const std: type = @import("std");
 
 pub fn main() void {
     // Take a good look at the array type to which we're coercing
@@ -33,7 +33,7 @@ pub fn main() void {
     // we can CONVERT IT TO A SLICE. (Hint: we do know the length!)
     //
     // Please fix this line so the print statement below can print it:
-    const zen12_string: []const u8 = zen_manyptr;
+    const zen12_string: []const u8 = zen_manyptr[0..21];
 
     // Here's the moment of truth!
     std.debug.print("{s}\n", .{zen12_string});
